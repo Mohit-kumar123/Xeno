@@ -18,13 +18,20 @@ MainRouter.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
+
+MainRouter.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'API is running',
+  });
+});
 MainRouter.post('/createCustomer',newCustomer);
 MainRouter.get('/getCustomer',fetchCustomer);
 MainRouter.post('/createOrder',newOrder);
 MainRouter.get('/getOrder',fetchOrder);
 MainRouter.post('/createCampaign',createCampaign);
-MainRouter.get('/getCamapign',getCampaigns);
-MainRouter.post('/sendCamapign',sendCampaign);
+MainRouter.get('/getCampaign', getCampaigns);
+MainRouter.post('/sendCampaign', sendCampaign);
 MainRouter.post('/updateReceipt',updateReceipt);
 
 export default MainRouter;

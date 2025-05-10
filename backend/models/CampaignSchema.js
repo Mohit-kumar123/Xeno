@@ -1,25 +1,24 @@
 import mongoose from 'mongoose';
 
 const CampaignSchema = new mongoose.Schema({
-    UserName:{
-        type: String,
-        required: true
+  UserName: {
+    type: String,
+    required: true,
+  },
+  Audience: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer', // Reference to the Customer collection
     },
+  ],
+  CurrentStatus: {
+    type: String,
+    default: 'Pending',
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-    Audience:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Customer'
-    }],
-
-    CurrentStatus:{
-        type:String,
-        default:'Pending'
-    },
-
-    date:{
-        type:Date,
-        default:Date.now()
-    },
-})
-
-export const Campaign = mongoose.model("Campaign",CampaignSchema);
+export const Campaign = mongoose.model('Campaign', CampaignSchema);

@@ -2,20 +2,32 @@ import {Campaign} from '../models/CampaignSchema.js';
 import {Customer} from '../models/CustomerSchema.js';
 
 export const createCampaign = async (req, res) => {
-  const { CustomerName, criteria } = req.body;
   try {
-    let query = {};
-    if (criteria.CustomerSpends) query.CustomerSpends = { $gt: criteria.CustomerSpends };
-    if (criteria.CustomerVisitsCount) query.CustomerVisitsCount = { $eq: criteria.CustomerVisitsCount };
-    if (criteria.CustomerLatestVisit) query.CustomerLatestVisit = { $lt: criteria.CustomerLatestVisit };
+    const { UserName, Audience, CurrentStatus } = req.body;
 
-    const audience = await Customer.find(query);
-    const campaign = new Campaign({ CustomerName, audience: audience.map(c => c._id) });
-    await campaign.save();
+    console.log('Request Body:', req.body);
 
-    res.json(campaign);
+    const newCampaign = new Campaign({
+      UserName,
+      Audience,
+      CurrentStatus,
+    });
+
+    console.log('New Campaign:', newCampaign);
+
+    await newCampaign.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Campaign created successfully',
+      data: newCampaign,
+    });
   } catch (error) {
-    res.status(500).send(error);
+    console.error('Error creating campaign:', error.message, error.stack);
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+    });
   }
 };
 
