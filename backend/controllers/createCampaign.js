@@ -5,7 +5,7 @@ export const createCampaign = async (req, res) => {
   try {
     const { UserName, Audience, CurrentStatus } = req.body;
 
-    console.log('Request Body:', req.body);
+    // console.log('Request Body:', req.body);
 
     const newCampaign = new Campaign({
       UserName,
@@ -13,7 +13,7 @@ export const createCampaign = async (req, res) => {
       CurrentStatus,
     });
 
-    console.log('New Campaign:', newCampaign);
+    // console.log('New Campaign:', newCampaign);
 
     await newCampaign.save();
 
@@ -33,9 +33,12 @@ export const createCampaign = async (req, res) => {
 
 export const getCampaigns = async (req, res) => {
   try {
-    const campaigns = await Campaign.find().populate('audience');
-    res.json(campaigns);
+    // console.log('Fetching campaigns...');
+    const campaigns = await Campaign.find().populate('Audience');
+    // console.log('Campaigns fetched:', campaigns);
+    res.status(200).json(campaigns);
   } catch (error) {
-    res.status(500).send('Server Error');
+    console.error('Error fetching campaigns:', error.message, error.stack);
+    res.status(500).json({ message: 'Server Error' });
   }
 };
